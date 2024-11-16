@@ -2,7 +2,7 @@ import { createAppKit } from "@reown/appkit/react";
 import { type ReactNode } from "react";
 
 import { WagmiProvider } from "wagmi";
-import { AppKitNetwork, arbitrum } from "@reown/appkit/networks";
+import { AppKitNetwork, arbitrum, sepolia } from "@reown/appkit/networks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 
@@ -21,7 +21,7 @@ const metadata = {
 };
 
 // 3. Set the networks
-const networks = [arbitrum] as [AppKitNetwork, ...AppKitNetwork[]];
+const networks = [sepolia] as [AppKitNetwork, ...AppKitNetwork[]];
 
 // 4. Create Wagmi Adapter
 const wagmiAdapter = new WagmiAdapter({
