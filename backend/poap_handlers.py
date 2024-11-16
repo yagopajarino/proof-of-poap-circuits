@@ -34,3 +34,12 @@ class PoapHandlers:
         content = json.loads(r.content.decode("utf-8"))
         events = [event["event"]["id"] for event in content]
         return events
+
+    def event_details_path(self, event_id):
+        return f"{API_URL}/events/id/{str(event_id)}"
+
+    def get_event_data(self, event_id):
+        path = self.event_details_path(event_id)
+        r = requests.get(path, headers=self.headers)
+        content = json.loads(r.content.decode("utf-8"))
+        return content

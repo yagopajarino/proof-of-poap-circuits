@@ -24,5 +24,11 @@ def owners_of(event_id):
     return jsonify(message=message)
 
 
+@app.route("/api/event/<int:event_id>", methods=["GET"])
+def get_event_data(event_id):
+    message = PoapHandlers().get_event_data(event_id)
+    return jsonify(message=message)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
