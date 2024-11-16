@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, request
 from poap_handlers import PoapHandlers
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/", methods=["GET"])
@@ -18,6 +21,12 @@ def events_of(address):
 @app.route("/api/owners/<int:event_id>", methods=["GET"])
 def owners_of(event_id):
     message = PoapHandlers().owners_of(event_id)
+    return jsonify(message=message)
+
+
+@app.route("/api/event/<int:event_id>", methods=["GET"])
+def get_event_data(event_id):
+    message = PoapHandlers().get_event_data(event_id)
     return jsonify(message=message)
 
 
