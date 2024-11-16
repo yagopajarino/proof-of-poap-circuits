@@ -50,13 +50,8 @@ export default class CircuitInputFormatter {
     obtainSignature() {
         let textToSign = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
         let hashedTextToSign = this._hashArrayIntoU8(textToSign);
-        let accountPrivateKey = this._obtainAccountPrivateKey();
         let signature = ...;
 
-    }
-
-    _obtainAccountPrivateKey(){
-        // Preguntarle a la wallet conectada
     }
 
     _hashArrayIntoU8(textToSign){
