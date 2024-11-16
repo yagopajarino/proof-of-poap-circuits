@@ -6,6 +6,10 @@ import DEPLOYER_ABI from "./config/abi/deployer.json";
 import POAP_DISPLAYER_ABI from "./config/abi/poapDisplayer.json";
 import { useQuery } from "@tanstack/react-query";
 import { Address, Abi } from "viem";
+import ModalPoap from "./components/ModalPoap";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Toaster } from "@/components/ui/toaster";
+import VerifySection from "./components/VerifySection";
 
 // Define una interfaz para el tipo de PoapDistributor
 interface PoapDistributor {
@@ -32,7 +36,13 @@ function App() {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      return data.message;
+      const poaps = data.message;
+      return await Promise.all(
+        poaps.map(async (poap: string) => {
+          const res = await fetch(`${BACKEND_URL}event/${poap}`);
+          return await res.json();
+        })
+      );
     },
     enabled: isConnected && !!address,
   });
@@ -104,40 +114,78 @@ function App() {
   }, [poapDeployers, poapDistributorsData]);
 
   return (
-    <>
-      <ConnectButton />
-      {isConnected && <p>Address: {address}</p>}
-      {isLoading && <p>Loading POAPs...</p>}
-      {/* {error && <p>Error loading POAPs: {error.message}</p>}
-      {poaps && (
-        <div>
-          <h2>Your POAPs:</h2>
-          <pre>{JSON.stringify(poaps, null, 2)}</pre>
-        </div>
-      )} */}
-      {isLoadingDeployer || isLoadingDistributors ? (
-        <div>Loading...</div>
-      ) : isErrorDeployer || isErrorDistributors ? (
-        <div>Error loading data</div>
-      ) : (
-        <div>
-          {processedData.map((distributor) => (
-            <div key={distributor.address}>
-              <h2>{distributor.name as string}</h2>
-              <p>{distributor.description as string}</p>
-              <p>Token: {distributor.token as string}</p>
-              <p>Verifier: {distributor.verifier as string}</p>
-              <p>
-                Stored Hashes:{" "}
-                {(distributor.storedHashes as number[])?.map((number) => {
-                  return number;
-                })}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
-    </>
+    <section className="flex flex-col w-full items-center px-10 justify-center">
+      <Toaster />
+
+      <div className="flex max-w-[1024px] w-full justify-between items-center px-4 h-[64px]">
+        <h1 className="text-2xl font-bold">POAP zk</h1>
+        <ConnectButton />
+      </div>
+      <Tabs defaultValue="poaps" className="w-full max-w-[1024px]">
+        <TabsList className="w-full">
+          <TabsTrigger className="w-full" value="poaps">
+            POAPs 🎟️
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="verify">
+            Verify 🔏
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="poaps">
+          <>
+            {isLoading && <p>Loading POAPs...</p>}
+            {error && <p>Error loading POAPs: {error.message}</p>}
+            {poaps && (
+              <div className="flex flex-wrap gap-4 p-4 justify-center items-center">
+                {poaps.map((poap: any, index: number) => (
+                  <ModalPoap
+                    key={index}
+                    title={poap.message.name}
+                    description={poap.message.description}
+                    imageUrl={poap.message.image_url}
+                  >
+                    <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 hover:scale-110 cursor-pointer">
+                      <img
+                        src={`${poap.message.image_url}?size=small`}
+                        alt={poap.message.name}
+                        className="w-full h-full object-cover"
+                        title={poap.message.name}
+                      />
+                    </div>{" "}
+                  </ModalPoap>
+                ))}
+              </div>
+            )}
+            {isConnected && <p>Address: {address}</p>}
+
+            {isLoadingDeployer || isLoadingDistributors ? (
+              <div>Loading...</div>
+            ) : isErrorDeployer || isErrorDistributors ? (
+              <div>Error loading data</div>
+            ) : (
+              <div>
+                {processedData.map((distributor) => (
+                  <div key={distributor.address}>
+                    <h2>{distributor.name as string}</h2>
+                    <p>{distributor.description as string}</p>
+                    <p>Token: {distributor.token as string}</p>
+                    <p>Verifier: {distributor.verifier as string}</p>
+                    <p>
+                      Stored Hashes:{" "}
+                      {(distributor.storedHashes as number[])?.map((number) => {
+                        return number;
+                      })}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        </TabsContent>
+        <TabsContent value="verify">
+          <VerifySection />
+        </TabsContent>
+      </Tabs>
+    </section>
   );
 }
 
