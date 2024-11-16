@@ -57,8 +57,6 @@ export default class CircuitInputFormatter {
     _hashArrayIntoU8(textToSign){
 
         let hash = await sha256Hash(textToSign);
-        sha256Hash(input).then((hash) => {
-            console.log(Array.from(hash).map(b => b.toString(16).padStart(2, "0")).join("")); // Hex string
-        });
+       
     }
 }
