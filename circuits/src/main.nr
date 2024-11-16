@@ -18,6 +18,13 @@ fn main(address_u8: [u8; 20],
      // Check inclusion
      assert(is_element_in_set(address_field, address_owners));
 
+     // Check address coincidence
+      let mut reconstructed_address: Field = 0;
+      for i in 0..address_u8.len() {
+          reconstructed_address = (reconstructed_address * 256) + (address_u8[i] as Field);
+      }
+      assert(address_field == reconstructed_address);
+
      // Verifies that the prover is owner of the private key
      // Prover is requested to send the message "X" hashed, so it might be possible to use a hardcoded hashed_message
 
@@ -43,9 +50,9 @@ fn main(address_u8: [u8; 20],
 #[test]
 fn test() {
 
-    let address_field = 0x4cceba2d7d2b4fdce4304d3e9a1fea9fbeb1528;
+    let address_field = 0x4cceba2d7d2b4fdce4304d3e09a1fea9fbeb1528;
     let address_owners = [
-        1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x4cceba2d7d2b4fdce4304d3e9a1fea9fbeb1528, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x4cceba2d7d2b4fdce4304d3e09a1fea9fbeb1528, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
 
@@ -61,9 +68,9 @@ fn test() {
 #[test(should_fail)]
 fn test_fail() {
 
-    let address_field = 0x4cceba2d7d2b4fdce4304d3e9a1fea9fbeb1528;
+    let address_field = 0x4cceba2d7d2b4fdce4304d9e09a1fea9fbeb1528;
     let address_owners = [
-        1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x4cceba2d6d2b4fdce4304d3e9a1fea9fbeb1528, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x4cceba2d7d2b4fdce4304d3e09a1fea9fbeb1528, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
 
