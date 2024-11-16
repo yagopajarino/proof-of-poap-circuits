@@ -11,9 +11,9 @@ fn is_element_in_set(element: Field, set: [Field; 50]) -> bool {
 fn main(address_u8: [u8; 20],
         address_field: Field,
         address_owners: pub [Field; 50],
-        pub_key_x: [u8;32],
-        pub_key_y: [u8;32],
-        signature: [u8;64],
+        pub_key_x: [u8; 32],
+        pub_key_y: [u8; 32],
+        signature: [u8; 64],
         hashed_message: pub [u8; 32],
         expected_message: pub [u8; 38] // Should change to 1 for "X"
 ){
