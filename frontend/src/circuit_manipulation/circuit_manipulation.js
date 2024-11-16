@@ -3,15 +3,6 @@ import fs
 
 export default class CircuitBuilder {
 
-    function defaultNargoToml(){
-        return `[package]
-              name = "poapPossessionProver"
-              type = "bin"
-            
-              [dependencies]
-              `
-    }
-
     function stringToStream(text: string): ReadableStream<Uint8Array> {
         const encoder = new TextEncoder();
         const uint8array = encoder.encode(text);
@@ -25,13 +16,18 @@ export default class CircuitBuilder {
 
     function read_circuit_from_file(){
         let file_circuit_path = "../../loquesea";
-        const circuit_src = = fs.readFileSync(filePath, 'utf-8');
+        const circuit_src = = fs.readFileSync(file_circuit_path, 'utf-8');
+    }
+
+    function read_nargo_toml_from_file(){
+        let file_nargo_toml_path = "../../loquesea";
+        const nargo_toml_src = = fs.readFileSync(file_nargo_toml_path, 'utf-8');
     }
 
     async function compileCircuit() {
         const fm = createFileManager('/');
         await fm.writeFile('./src/main.nr', this.stringToStream(this.read_circuit_from_file()));
-        await fm.writeFile('./Nargo.toml', this.stringToStream(this.defaultNargoToml()));
+        await fm.writeFile('./Nargo.toml', this.stringToStream(this.read_nargo_toml_from_file()));
         try {
             const result = await compile(fm);
             return result.program;
@@ -54,7 +50,8 @@ export default class CircuitBuilder {
         const proofData = await barretenbergBackend.generateProof(witness)
         console.log("Proof generated")
         if (!proofData) return;
-        
+        return proofData
+
     };
 
 }
