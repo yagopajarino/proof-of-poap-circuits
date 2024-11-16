@@ -1,5 +1,5 @@
 import { compile, createFileManager } from '@noir-lang/noir_wasm';
-import fs
+import fs from "fs";
 
 export default class CircuitBuilder {
 
@@ -15,12 +15,12 @@ export default class CircuitBuilder {
     }
 
     read_circuit_from_file(){
-        let file_circuit_path = "../../loquesea";
-        const circuit_src = = fs.readFileSync(file_circuit_path, 'utf-8');
+        let file_circuit_path = "../../circuits/src/main.nr";
+        const circuit_src = fs.readFileSync(file_circuit_path, 'utf-8');
     }
 
     read_nargo_toml_from_file(){
-        let file_nargo_toml_path = "../../loquesea";
+        let file_nargo_toml_path = "../../circuits/Nargo.toml";
         const nargo_toml_src = = fs.readFileSync(file_nargo_toml_path, 'utf-8');
     }
 
