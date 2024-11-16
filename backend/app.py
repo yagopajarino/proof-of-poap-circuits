@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, request
 from poap_handlers import PoapHandlers
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/", methods=["GET"])
