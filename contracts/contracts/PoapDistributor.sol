@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 // Interface for the verifier contract
 interface IVerifier {
-    function verify(address sender, bytes32[] memory hashes, bytes memory signature) external view returns (bool);
+    function verify(address sender, uint256[] memory hashes, bytes memory signature) external view returns (bool);
 }
 
 // The PoapDistributor contract manages the distribution of ERC20 tokens based on verification
@@ -15,7 +15,7 @@ contract PoapDistributor {
     // Verifier contract used for transaction verification
     IVerifier public verifier;
     // Array to store hashes for verification purposes
-    bytes32[] public storedHashes;
+    uint256[] public storedHashes;
 
     // Metadata for the contract
     string public name;
@@ -25,7 +25,7 @@ contract PoapDistributor {
     constructor(
         address _tokenAddress,
         address _verifierAddress,
-        bytes32[] memory _hashes,
+        uint256[] memory _hashes,
         string memory _name,
         string memory _description
     ) {
@@ -43,7 +43,7 @@ contract PoapDistributor {
     }
 
     // Function to execute a transaction after verification
-    function executeTransaction(bytes32[] memory hashes, bytes memory signature) external {
+    function executeTransaction(uint256[] memory hashes, bytes memory signature) external {
         // Verify the transaction using the verifier contract
         require(verifier.verify(msg.sender, hashes, signature), "Verification failed");
         // Check if there are enough tokens available for distribution

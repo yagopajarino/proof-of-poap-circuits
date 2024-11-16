@@ -13,7 +13,7 @@
        function deployPoapDistributor(
            address _tokenAddress,
            address _verifierAddress,
-           bytes32[] memory _hashes,
+           uint256[] memory _hashes,
            string memory _name,
            string memory _description
        ) public {

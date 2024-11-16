@@ -10,7 +10,7 @@ describe("PoapDistributor", function () {
   let otherAccount: any;
   const initialSupply = ethers.parseUnits("1000", 18);
   const tokenAmount = ethers.parseUnits("10", 18);
-  const hashes = [ethers.encodeBytes32String("hash1")];
+  const hashes = [1234567890];
   const name = "Test POAP Distributor";
   const description = "A test instance of PoapDistributor";
 
